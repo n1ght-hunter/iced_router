@@ -6,3 +6,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+iced_native = "0.9.1"
+iced_style = "0.7.0"
+
+
+[workspace]
+members = [
+  "example",
+]
