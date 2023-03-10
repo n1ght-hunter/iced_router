@@ -14,11 +14,11 @@ pub struct Route<T> {
 }
 
 impl<T> Route<T> {
-    pub fn new(page: impl Into<T>, title: impl Into<String>) -> Self {
+    pub fn new(page: T, title: impl Into<String>) -> Self {
         Self {
             data: State::None,
             title: title.into(),
-            page: page.into(),
+            page: page,
             scrollable: None,
         }
     }
@@ -128,8 +128,8 @@ where
         self.update = true;
     }
 
-    fn go(&mut self, nav: impl Into<history_trait::Nav>) {
-        match nav.into() {
+    fn go(&mut self, nav: history_trait::Nav<T>) {
+        match nav {
             Nav::Number(number) => {
                 if number > 0 {
                     self.go_forward(number as usize)
@@ -138,17 +138,16 @@ where
                     self.go_back(number.abs() as usize)
                 }
             }
-            _ => {} // todo
-                    // Nav::Url(url) => {
-                    //     let current = self.current.take().unwrap();
-                    //     self.current = Some(Route {
-                    //         data: State::None,
-                    //         title: current.title.clone(),
-                    //         url,
-                    //         scrollable: RelativeOffset::default(),
-                    //     });
-                    //     self.history.push(current);
-                    // }
+             Nav::Page(page) => {
+                  let current = self.current.take().unwrap();
+                  self.current = Some(Route {
+                      data: State::None,
+                      title: current.title.clone(),
+                      page: page,
+                      scrollable: None,
+                  });
+                  self.history.push(current);
+              }
         }
         self.update = true;
     }

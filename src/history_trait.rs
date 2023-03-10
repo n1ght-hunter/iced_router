@@ -7,18 +7,13 @@ pub enum ScrollRestoration {
     Auto,
 }
 
-pub enum Nav {
+pub enum Nav<T> {
     Number(i32),
-    Url(String),
+    Page(T),
 }
 
-impl Into<Nav> for String {
-    fn into(self) -> Nav {
-        Nav::Url(self)
-    }
-}
-impl Into<Nav> for i32 {
-    fn into(self) -> Nav {
+impl<T> Into<Nav<T>> for i32 {
+    fn into(self) -> Nav<T> {
         Nav::Number(self)
     }
 }
@@ -26,23 +21,29 @@ impl Into<Nav> for i32 {
 pub trait History<T> {
     type State;
 
+    // lenth of all items in history
     fn lenth(&self) -> usize;
 
+    // returns the state of the current page
     fn state(&self) -> &Self::State;
 
+    // put in title fn to autmaticlly change the title when the page is changed
     fn title(&self) -> String;
 
+    // return the current page
     fn page(&self) -> T;
-    
+
+    // set current page scroll offset
     fn set_scroll(&mut self, off_set: RelativeOffset);
-    
+
+    // go back one in history
     fn back(&mut self);
-
+    // go forward one in history
     fn forward(&mut self);
+    // go to forward or backward or push to state
+    fn go(&mut self, nav: Nav<T>);
 
-    fn go(&mut self, nav: impl Into<Nav>);
-
-    fn push_state(&mut self,  route: Route<T>);
+    fn push_state(&mut self, route: Route<T>);
 
     fn replace_state(&mut self, route: Route<T>);
 
