@@ -34,6 +34,12 @@ enum Pages {
     Scrollable,
 }
 
+impl Into<iced_router::history_trait::Nav<Pages>> for Pages {
+    fn into(self) -> iced_router::history_trait::Nav<Pages> {
+        iced_router::history_trait::Nav::Page(self)
+    }
+}
+
 #[derive(Debug, Clone)]
 enum Navgate {
     Forward,

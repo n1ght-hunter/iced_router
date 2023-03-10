@@ -12,5 +12,5 @@ iced_style = "0.7.0"
 
 [workspace]
 members = [
-  "example",
+  "examples/*",
 ]

@@ -527,6 +527,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "enum_example"
+version = "0.1.0"
+dependencies = [
+ "iced",
+ "iced_router",
+ "once_cell",
+ "time",
+]
+
+[[package]]
 name = "error-code"
 version = "2.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -543,16 +553,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b52c2ef4a78da0ba68fbe1fd920627411096d2ac478f7f4c9f3a54ba6705bade"
 dependencies = [
  "num-traits",
-]
-
-[[package]]
-name = "example"
-version = "0.1.0"
-dependencies = [
- "iced",
- "iced_router",
- "once_cell",
- "time",
 ]
 
 [[package]]
@@ -1965,6 +1965,16 @@ name = "str-buf"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e08d8363704e6c71fc928674353e6b7c23dcea9d82d7012c8faf2a3a025f8d0"
+
+[[package]]
+name = "string_example"
+version = "0.1.0"
+dependencies = [
+ "iced",
+ "iced_router",
+ "once_cell",
+ "time",
+]
 
 [[package]]
 name = "strsim"
