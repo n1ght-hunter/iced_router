@@ -13,5 +13,5 @@ once_cell = "1.17.1"
 features = ["canvas", "tokio", "debug"]
 version = "0.8.0"
 
-[dependencies.iced_router]
-path = "../../"
+[dependencies.iced_history]
+path = "../../iced_history"

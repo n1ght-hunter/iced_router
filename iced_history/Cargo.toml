@@ -1,16 +1,11 @@
 [package]
-edition = "2021"
-name = "iced_router"
+name = "iced_history"
 version = "0.1.0"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
 
 [dependencies]
 iced_native = "0.9.1"
 iced_style = "0.7.0"
-
-[workspace]
-members = [
-  "examples/*",
-  "iced_history",
-]

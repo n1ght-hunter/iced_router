@@ -5,7 +5,7 @@ use iced::{
     widget::{self, button, canvas::Cache, container, scrollable, text, vertical_space},
     Alignment, Application, Length, Settings,
 };
-use iced_router::{history_trait::History, Route, Router};
+use iced_history::{history_trait::History, Route, Router};
 use once_cell::sync::Lazy;
 
 static SCROLLABLE_ID: Lazy<scrollable::Id> = Lazy::new(scrollable::Id::unique);
@@ -20,7 +20,7 @@ fn main() {
 
 #[derive(Debug)]
 struct StringRouter {
-    router: iced_router::Router<String>,
+    router: iced_history::Router<Pages>,
     now: time::OffsetDateTime,
     clock: Cache,
     value: i32,
@@ -32,6 +32,12 @@ enum Pages {
     CLock,
     Counter,
     Scrollable,
+}
+
+impl Into<iced_history::history_trait::Nav<Pages>> for Pages {
+    fn into(self) -> iced_history::history_trait::Nav<Pages> {
+        iced_history::history_trait::Nav::Page(self)
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -64,7 +70,7 @@ impl iced::Application for StringRouter {
     fn new(_flags: Self::Flags) -> (Self, iced::Command<Self::Message>) {
         (
             StringRouter {
-                router: Router::new(Route::new("home".to_string(), "Home")),
+                router: Router::new(Route::new(Pages::Home, "Home")),
                 now: time::OffsetDateTime::now_local()
                     .unwrap_or_else(|_| time::OffsetDateTime::now_utc()),
                 clock: Default::default(),
@@ -85,17 +91,13 @@ impl iced::Application for StringRouter {
     fn update(&mut self, message: Self::Message) -> iced::Command<Self::Message> {
         match message {
             Message::SetPage(page) => match page {
-                Pages::Home => self
-                    .router
-                    .push_state(Route::new("home".to_string(), "home")),
-                Pages::CLock => self
-                    .router
-                    .push_state(Route::new("clock".to_string(), "clock")),
+                Pages::Home => self.router.push_state(Route::new(Pages::Home, "home")),
+                Pages::CLock => self.router.push_state(Route::new(Pages::CLock, "clock")),
                 Pages::Counter => self
                     .router
-                    .push_state(Route::new("counter".to_string(), "counter")),
+                    .push_state(Route::new(Pages::Counter, "counter")),
                 Pages::Scrollable => self.router.push_state(
-                    Route::new("scrollable".to_string(), "scrollable")
+                    Route::new(Pages::Scrollable, "scrollable")
                         .set_scrollable(SCROLLABLE_ID.clone(), scrollable::RelativeOffset::START),
                 ),
             },
@@ -151,8 +153,8 @@ impl iced::Application for StringRouter {
             ]
         ];
 
-        match self.router.page().as_str() {
-            "home" => {
+        match self.router.page() {
+            Pages::Home => {
                 let content = container("Home page Try out the Router")
                     .center_x()
                     .center_y()
@@ -160,7 +162,7 @@ impl iced::Application for StringRouter {
                     .height(Length::Fill);
                 widget::column![menu, content].into()
             }
-            "clock" => {
+            Pages::CLock => {
                 let canvas = widget::canvas(self as &Self)
                     .width(Length::Fill)
                     .height(Length::Fill);
@@ -172,7 +174,7 @@ impl iced::Application for StringRouter {
                     .height(Length::Fill);
                 widget::column![menu, content].into()
             }
-            "counter" => {
+            Pages::Counter => {
                 let content = container(
                     widget::column![
                         button("Increment").on_press(Message::IncrementPressed),
@@ -188,7 +190,7 @@ impl iced::Application for StringRouter {
                 .height(Length::Fill);
                 widget::column![menu, content].into()
             }
-            "scrollable" => {
+            Pages::Scrollable => {
                 let content = container(
                     scrollable(
                         widget::column![
@@ -219,7 +221,6 @@ impl iced::Application for StringRouter {
                 .height(Length::Fill);
                 widget::column![menu, content].into()
             }
-            &_ => widget::column![menu].into(),
         }
     }
 }

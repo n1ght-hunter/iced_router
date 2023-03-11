@@ -531,7 +531,7 @@ name = "enum_example"
 version = "0.1.0"
 dependencies = [
  "iced",
- "iced_router",
+ "iced_history",
  "once_cell",
  "time",
 ]
@@ -966,6 +966,14 @@ dependencies = [
  "lyon",
  "raw-window-handle 0.5.1",
  "thiserror",
+]
+
+[[package]]
+name = "iced_history"
+version = "0.1.0"
+dependencies = [
+ "iced_native",
+ "iced_style",
 ]
 
 [[package]]
@@ -1971,7 +1979,7 @@ name = "string_example"
 version = "0.1.0"
 dependencies = [
  "iced",
- "iced_router",
+ "iced_history",
  "once_cell",
  "time",
 ]
